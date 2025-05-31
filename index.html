@@ -13,10 +13,12 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #f77ca9 0%, #bb3c71 100%);
       min-height: 100vh;
       padding: 20px;
       color: #333;
+        position: relative;
+      overflow-x: hidden;
     }
 
     .container {
@@ -72,7 +74,7 @@
 
     input[type="date"]:focus, input[type="text"]:focus, select:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #ea669b;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
@@ -90,7 +92,7 @@
     button {
       width: 100%;
       padding: 18px;
-      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      background: linear-gradient(45deg, #ff5498, #f87bab);
       color: white;
       border: none;
       border-radius: 12px;
@@ -105,7 +107,7 @@
     button:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-      background: linear-gradient(45deg, #ff5252, #ff7979);
+      background: linear-gradient(45deg, #e4cf9e, #ffff5f);
     }
 
     button:active {
@@ -115,7 +117,7 @@
     .result-section {
       margin-top: 30px;
       padding: 25px;
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: linear-gradient(135deg, #f093fb 0%, #ff4a92 100%);
       border-radius: 15px;
       color: white;
       text-align: center;
@@ -200,49 +202,91 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>🌟 AI Zodiak & Jodoh Analyzer 🌟</h1>
+  <!-- Container baru untuk Analisis Zodiak Pribadi -->
+<div class="container">
+  <h1>✨ AI Analisis Zodiak Pribadi ✨</h1>
+  <div class="card">
+    <div class="input-group">
+      <label for="personalName">💖 Nama Kamu:</label>
+      <input type="text" id="personalName" placeholder="Masukkan nama kamu">
+    </div>
+
+    <div class="input-group">
+      <label for="personalBirthdate">🎂 Tanggal Lahir Kamu:</label>
+      <input type="date" id="personalBirthdate">
+    </div>
+
+    <div class="input-group">
+      <label>👤 Jenis Kelamin Kamu:</label>
+      <div class="gender-group">
+        <div class="gender-option">
+          <select id="personalGender">
+            <option value="pria">Pria 👨</option>
+            <option value="wanita">Wanita 👩</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="analyzePersonalZodiac()">✨ Analisis Zodiak Pribadi Kamu ✨</button>
+
+    <div class="loading" id="personalLoading" style="display:none;">
+      <div class="spinner"></div>
+      <p>AI sedang menganalisis zodiak pribadimu...</p>
+    </div>
+
+    <div class="result-section" id="personalResult" style="display:none;">
+      <div class="zodiac-info" id="personalZodiacInfo"></div>
+      <div class="ai-analysis" id="personalAiAnalysis"></div>
+      <div class="love-tips" id="personalLoveTips"></div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="container untuk perjodohan">
+    <h1>🌸 AI Zodiak & Jodoh Analyzer 🌸</h1>
 
     <div class="card">
       <div class="input-group">
-        <label for="yourName">Nama Kamu:</label>
+        <label for="yourName">💖 Nama Kamu:</label>
         <input type="text" id="yourName" placeholder="Masukkan nama kamu">
       </div>
 
       <div class="input-group">
-        <label for="birthdate">Tanggal Lahir Kamu:</label>
+        <label for="birthdate">🎂 Tanggal Lahir Kamu:</label>
         <input type="date" id="birthdate">
       </div>
 
       <div class="input-group">
-        <label>Jenis Kelamin Kamu:</label>
+        <label>👤 Jenis Kelamin Kamu:</label>
         <div class="gender-group">
           <div class="gender-option">
             <select id="yourGender">
-              <option value="pria">Pria</option>
-              <option value="wanita">Wanita</option>
+              <option value="pria">Pria 👨</option>
+              <option value="wanita">Wanita 👩</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="input-group">
-        <label for="partnerName">Nama Pasangan:</label>
+        <label for="partnerName">💕 Nama Pasangan:</label>
         <input type="text" id="partnerName" placeholder="Masukkan nama pasangan">
       </div>
 
       <div class="input-group">
-        <label for="partnerdate">Tanggal Lahir Pasangan:</label>
+        <label for="partnerdate">🎂 Tanggal Lahir Pasangan:</label>
         <input type="date" id="partnerdate">
       </div>
 
       <div class="input-group">
-        <label>Jenis Kelamin Pasangan:</label>
+        <label>👤 Jenis Kelamin Pasangan:</label>
         <div class="gender-group">
           <div class="gender-option">
             <select id="partnerGender">
-              <option value="wanita">Wanita</option>
-              <option value="pria">Pria</option>
+              <option value="wanita">Wanita 👩</option>
+              <option value="pria">Pria 👨</option>
             </select>
           </div>
         </div>
@@ -268,62 +312,62 @@
     // Database AI untuk analisis kompatibilitas yang unik
     const zodiacTraits = {
       "Aries": {
-        element: "Api", 
+        element: "Api♈", 
         traits: ["passionate", "energetic", "impulsive", "leader", "adventurous"],
         keywords: ["semangat", "petualangan", "kepemimpinan", "spontan"]
       },
       "Taurus": {
-        element: "Tanah", 
+        element: "Tanah♉", 
         traits: ["stable", "loyal", "stubborn", "practical", "sensual"],
         keywords: ["kesetiaan", "kestabilan", "kemewahan", "kesabaran"]
       },
       "Gemini": {
-        element: "Udara", 
+        element: "Udara♊", 
         traits: ["communicative", "versatile", "curious", "witty", "changeable"],
         keywords: ["komunikasi", "fleksibilitas", "kecerdasan", "variasi"]
       },
       "Cancer": {
-        element: "Air", 
+        element: "Air♋", 
         traits: ["nurturing", "emotional", "intuitive", "protective", "homely"],
         keywords: ["perhatian", "emosi", "keluarga", "intuisi"]
       },
       "Leo": {
-        element: "Api", 
+        element: "Api♌", 
         traits: ["dramatic", "generous", "confident", "creative", "proud"],
         keywords: ["kepercayaan diri", "kreativitas", "kemurahan hati", "drama"]
       },
       "Virgo": {
-        element: "Tanah", 
+        element: "Tanah♍", 
         traits: ["analytical", "perfectionist", "helpful", "practical", "modest"],
         keywords: ["kesempurnaan", "analitis", "membantu", "detail"]
       },
       "Libra": {
-        element: "Udara", 
+        element: "Udara♎", 
         traits: ["balanced", "diplomatic", "social", "artistic", "indecisive"],
         keywords: ["keseimbangan", "harmoni", "keadilan", "seni"]
       },
       "Scorpio": {
-        element: "Air", 
+        element: "Air♏", 
         traits: ["intense", "mysterious", "passionate", "transformative", "secretive"],
         keywords: ["intensitas", "misteri", "transformasi", "kedalaman"]
       },
       "Sagittarius": {
-        element: "Api", 
+        element: "Api♐", 
         traits: ["adventurous", "philosophical", "optimistic", "freedom-loving", "honest"],
         keywords: ["petualangan", "filosofi", "kebebasan", "optimisme"]
       },
       "Capricorn": {
-        element: "Tanah", 
+        element: "Tanah♑", 
         traits: ["ambitious", "disciplined", "responsible", "traditional", "patient"],
         keywords: ["ambisi", "disiplin", "tanggung jawab", "tradisi"]
       },
       "Aquarius": {
-        element: "Udara", 
+        element: "Udara♒", 
         traits: ["innovative", "independent", "humanitarian", "eccentric", "detached"],
         keywords: ["inovasi", "kemanusiaan", "kebebasan", "keunikan"]
       },
       "Pisces": {
-        element: "Air", 
+        element: "Air♓", 
         traits: ["intuitive", "compassionate", "artistic", "dreamy", "sensitive"],
         keywords: ["intuisi", "kasih sayang", "seni", "mimpi"]
       }
@@ -563,7 +607,7 @@
 
       zodiacInfo.innerHTML = `
         <div class="zodiac-card">
-          <h3>🌟 ${yourName}</h3>
+          <h3>🌸 ${yourName}</h3>
           <p><strong>${yourZodiac}</strong></p>
           <p>Elemen: ${zodiacTraits[yourZodiac].element}</p>
         </div>
@@ -588,7 +632,7 @@
           ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
         </ul>
         
-        <h4>⚠️ Area yang Perlu Diperhatikan:</h4>
+        <h4>⚠️ Yang perlu di perhatikan di Hubungan :</h4>
         <ul>
           ${analysis.challenges.map(challenge => `<li>${challenge}</li>`).join('')}
         </ul>
@@ -602,12 +646,93 @@
       `;
     }
 
+
+    function analyzePersonalZodiac() {
+  const yourName = document.getElementById("personalName").value.trim();
+  const birthdate = document.getElementById("personalBirthdate").value;
+  const yourGender = document.getElementById("personalGender").value;
+
+  if (!yourName || !birthdate) {
+    alert("❗ Mohon isi Nama dan Tanggal Lahir untuk analisis pribadi.");
+    return;
+  }
+
+  document.getElementById("personalLoading").style.display = "block";
+  document.getElementById("personalResult").style.display = "none";
+
+  setTimeout(() => {
+    const birth = new Date(birthdate);
+    const yourZodiac = getZodiac(birth.getDate(), birth.getMonth() + 1);
+
+    const personalAnalysis = generatePersonalZodiacAnalysis(yourZodiac, yourName, yourGender);
+
+    displayPersonalZodiacResult(yourName, yourZodiac, personalAnalysis);
+
+    document.getElementById("personalLoading").style.display = "none";
+    document.getElementById("personalResult").style.display = "block";
+  }, 1500);
+}
+
+function generatePersonalZodiacAnalysis(zodiac, name, gender) {
+  const traits = zodiacTraits[zodiac];
+
+  const strengths = [
+    `Sebagai ${zodiac}, kamu sangat ${traits.keywords[0]} dan ${traits.keywords[1]}, yang membuatmu mudah disukai banyak orang.`,
+    `Kelebihan lainnya adalah ${traits.keywords[2]} yang membantu kamu menghadapi berbagai tantangan.`
+  ];
+
+  const weaknesses = [
+    `Namun, kamu juga perlu memperhatikan sisi ${traits.traits[2]}, yang kadang bisa jadi tantangan dalam hubungan dan pekerjaan.`,
+    `Cobalah untuk mengendalikan sifat ${traits.traits[4]} agar hidup lebih seimbang.`
+  ];
+
+  const advice = `AI menyarankan agar ${name} (${gender === "pria" ? "Pak" : "Bu"}) menggunakan kelebihan tersebut untuk mengembangkan potensi, dan belajar memperbaiki kekurangan agar kehidupan lebih harmonis. Ingat, zodiak adalah panduan, keputusan terbaik ada di tangan kamu!`;
+
+  return {
+    strengths,
+    weaknesses,
+    advice
+  };
+}
+
+function displayPersonalZodiacResult(name, zodiac, analysis) {
+  const zodiacInfo = document.getElementById("personalZodiacInfo");
+  const aiAnalysis = document.getElementById("personalAiAnalysis");
+  const loveTips = document.getElementById("personalLoveTips");
+
+  zodiacInfo.innerHTML = `
+    <div class="zodiac-card" style="flex: 1 1 100%;">
+      <h3>🌟 ${name}, Zodiak Kamu: <strong>${zodiac}</strong></h3>
+      <p>Elemen: ${zodiacTraits[zodiac].element}</p>
+    </div>
+  `;
+
+  aiAnalysis.innerHTML = `
+    <h3>🤖 AI Analisis Karakter Pribadi</h3>
+    <h4>✨ Kelebihan Kamu:</h4>
+    <ul>
+      ${analysis.strengths.map(s => `<li>${s}</li>`).join('')}
+    </ul>
+    <h4>⚠️ Kekurangan yang Perlu Diperbaiki:</h4>
+    <ul>
+      ${analysis.weaknesses.map(w => `<li>${w}</li>`).join('')}
+    </ul>
+  `;
+
+  loveTips.innerHTML = `
+    <h4>💡 Saran dari AI untuk Kamu:</h4>
+    <p>${analysis.advice}</p>
+    <p><strong>Ingat!</strong> Zodiak hanya sebagai panduan, fokuslah pada perkembangan diri dan kesadaran diri untuk hidup yang lebih baik.</p>
+  `;
+}
+
     // Initialize with current date limits
     document.addEventListener('DOMContentLoaded', function() {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('birthdate').max = today;
-      document.getElementById('partnerdate').max = today;
-    });
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('birthdate').max = today;
+  document.getElementById('partnerdate').max = today;
+  document.getElementById('personalBirthdate').max = today;  // << ini tambahan untuk fitur baru
+});
   </script>
 
 </body>
